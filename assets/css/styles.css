@@ -111,3 +111,55 @@ footer {
     color: #aaa;
     margin-top: 40px;
 }
+
+/* --- Vista en celulares (Menú) --- */
+@media (max-width: 768px) {
+    /* 1. El contenedor principal se apila verticalmente, logo arriba, menú abajo */
+    .navbar {
+        flex-direction: column;
+        align-items: center; /* Centra todo horizontalmente */
+        padding: 15px 10px;
+    }
+
+    /* 2. El logo se ajusta un poco para no verse tan grande */
+    .logo img {
+        max-height: 50px; /* Un poco más pequeño en celular */
+        margin-bottom: 15px; /* Espacio debajo del logo */
+    }
+
+    /* 3. El menú de navegación */
+    .navbar nav {
+        width: 100%; /* Ocupa todo el ancho disponible */
+    }
+
+    /* 4. La lista de enlaces*/
+    .navbar nav ul {
+        display: flex;
+        flex-direction: row; /* Vuelven a ser horizontales */
+        flex-wrap: wrap;     /* Si no caben, bajan a la siguiente línea */
+        justify-content: center; /* Centrados en la pantalla */
+        gap: 10px 15px;      /* Espacio vertical (10px) y horizontal (15px) entre enlaces */
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 5. Estilo de los enlaces individuales */
+    .navbar nav ul li {
+        margin: 0; /* Quitamos márgenes viejos */
+    }
+
+    .navbar nav ul li a {
+        display: inline-block; /* para que el padding funcione bien */
+        padding: 8px 12px;     /* Área de toque cómoda pero no exagerada */
+        font-size: 0.95rem;    /* Ligeramente más pequeño para que quepan mejor */
+        border-radius: 20px;   /* Un toque redondeado moderno  */
+        background-color: transparent; /* Sin fondo tosco */
+        border: 1px solid transparent; /* Borde invisible*/
+    }
+
+    /* Un pequeño efecto al tocar con el dedo */
+    .navbar nav ul li a:active {
+        background-color: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.3);
+    }
+}
