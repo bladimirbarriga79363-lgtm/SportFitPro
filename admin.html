@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - SportFit Pro</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formularios.css">
+</head>
+<body>
+    <header>
+        <div class="navbar">
+            <div class="logo"><img src="assets/img/logo.png" alt="SportFit Pro Logo"></div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Inicio</a></li>
+                    <li><a href="catalogo.html">Catálogo</a></li>
+                    <li><a href="admin.html" class="active">Administración</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 style="text-align: center; color: #002b5c;">Gestión de Inventario</h1>
+        
+        <div class="form-container">
+            <form action="#" method="POST">
+                <div class="form-group">
+                    <label>Acción a realizar:</label>
+                    <div class="radio-group">
+                        <input type="radio" id="alta" name="accion" value="alta" checked>
+                        <label for="alta">Alta</label>
+                        
+                        <input type="radio" id="modificacion" name="accion" value="modificacion">
+                        <label for="modificacion">Modificación</label>
+                        
+                        <input type="radio" id="baja" name="accion" value="baja">
+                        <label for="baja">Baja</label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="codigo">Código del Producto (SKU):</label>
+                    <input type="text" id="codigo" name="codigo" required placeholder="Ej. TEN-001">
+                </div>
+
+                <div class="form-group">
+                    <label for="nombre">Nombre del Producto:</label>
+                    <input type="text" id="nombre" name="nombre" required placeholder="Ej. Tenis Velocity X">
+                </div>
+
+                <div class="form-group">
+                    <label for="categoria">Categoría:</label>
+                    <select id="categoria" name="categoria">
+                        <option value="calzado">Calzado</option>
+                        <option value="ropa">Ropa Deportiva</option>
+                        <option value="accesorios">Accesorios</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="precio">Precio ($):</label>
+                    <input type="number" id="precio" name="precio" min="0" step="0.01" required>
+                </div>
+
+                <button type="submit" class="btn-submit">Procesar Solicitud</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 SportFit Pro - Panel Administrativo</p>
+    </footer>
+</body>
+</html>
