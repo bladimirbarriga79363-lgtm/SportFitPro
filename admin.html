@@ -28,7 +28,7 @@
         <h1 style="text-align: center; color: #002b5c;">Gestión de Inventario</h1>
         
         <div class="form-container">
-            <form action="#" method="POST">
+            <form action="#" method="GET" onsubmit="alert('¡Solicitud procesada con éxito!'); this.reset(); return false;">
                 <div class="form-group">
                     <label>Acción a realizar:</label>
                     <div class="radio-group">
@@ -58,7 +58,7 @@
                     <select id="categoria" name="categoria">
                         <option value="calzado">Calzado</option>
                         <option value="ropa">Ropa Deportiva</option>
-                        <option value="accesorios">Accesorios</option>
+                        <option value="accesorios">Sudadera</option>
                     </select>
                 </div>
 
@@ -73,7 +73,21 @@
     </div>
 
     <footer>
-        <p>&copy; 2026 SportFit Pro - Panel Administrativo</p>
+        <p>SportFit Pro - Panel Administrativo</p>
+        <p>
+    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
+            
+            <a href="https://validator.w3.org/">
+                <img src="https://www.w3.org/html/logo/badge/html5-badge-h-solo.png" 
+                    width="63" height="64" alt="HTML5 Válido" title="HTML5 Válido" style="border:0;">
+            </a>
+    <a href="https://jigsaw.w3.org/css-validator/check/referer">
+        <img style="border:0;width:88px;height:31px"
+            src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
+            alt="¡CSS Válido!" />
+    </a>
+</p>   
+</div>
     </footer>
 </body>
 </html>
