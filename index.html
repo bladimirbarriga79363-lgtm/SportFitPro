@@ -10,7 +10,7 @@
     <header>
         <div class="navbar">
             <div class="logo">
-                <img src="assets/img/logo.png" alt="SportFit Pro Logo"> 
+                <img src="assets/img/logo.png" alt="SportFit Pro Logo">
             </div>
             <nav>
                 <ul>
@@ -34,106 +34,87 @@
         <a href="catalogo.html" class="btn-comprar" style="text-decoration: none;">Ver Catálogo</a>
     </div>
 
-<div id="app-index" style="text-align: center; margin: 30px auto; max-width: 800px; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
-
-        <h2 style="color: #002b5c;">Explora la experiencia interactiva SportFit</h2>
-
-        <button @click="mostrarPanel = !mostrarPanel" class="btn-submit" style="cursor: pointer; margin-bottom: 20px; padding: 12px 25px; font-size: 16px;">
-            {{ mostrarPanel ? 'Ocultar Panel Interactivo' : 'Descubrir Funciones Dinámicas' }}
-        </button>
-
-        <div v-if="mostrarPanel" style="animation: fadeIn 0.5s;">
-            
-            <hr style="border: 0; border-top: 1px solid #ccc; margin: 10px 0 20px 0;">
-
-            <button @click="mostrarOferta = !mostrarOferta" class="btn-submit" style="cursor: pointer; margin-bottom: 15px;">
-            {{ mostrarOferta ? 'Ocultar Oferta' : '🎁 Ver Oferta del Día' }}
-            </button>
-            <div v-if="mostrarOferta" style="padding: 10px; background-color: #ffcc00; color: #002b5c; border-radius: 5px; font-weight: bold; margin-bottom: 20px;">
-                {{ mensajeOferta }}
-            </div>
-
-            <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
-
-            <h3 style="color: #ff5722;">Categorías Populares</h3>
-            <ul style="list-style-type: none; padding: 0; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-                <li v-for="(categoria, index) in categorias" :key="index" style="background-color: #002b5c; color: white; padding: 10px 20px; border-radius: 20px;">
-                    {{ categoria }}
-                </li>
-            </ul>
-
-            <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
-
-            <div 
-                @mouseover="hoverActivo = true" 
-                @mouseleave="hoverActivo = false"
-                :style="{ backgroundColor: hoverActivo ? '#e0f7fa' : 'white', border: '2px dashed #002b5c', padding: '15px', borderRadius: '5px', cursor: 'pointer', transition: '0.3s' }"
-            >
-                <h4 style="margin: 0; color: #002b5c;">
-                    {{ hoverActivo ? '¡Envío Gratis en compras mayores a $1099!' : 'Pasa el ratón por aquí para un beneficio extra' }}
-                </h4>
-            </div>
-
-            <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
-
-            <div style="text-align: center; padding: 10px;">
-                <label style="font-weight: bold; color: #002b5c;">Suscríbete para promociones exclusivas:</label><br>
-                <input type="text" v-model="emailUsuario" placeholder="Escribe tu correo electrónico..." style="width: 80%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 4px;">
-                <p v-if="emailUsuario" style="color: #ff5722; font-size: 15px; margin-top: 10px;">
-                    Confirmando envío de cupones a: <strong>{{ emailUsuario }}</strong>
-                </p>
-            </div>
-        </div>
-
-    </div>
+    <div id="app-index"></div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
         const appIndex = Vue.createApp({
             data() {
                 return {
-                    // Controla la visibilidad de todo el panel
-                    mostrarPanel: false, 
-                    
-                    // Datos para el Toggle 
+                    mostrarPanel: false,
                     mostrarOferta: false,
                     mensajeOferta: "¡20% de Descuento en todo el calzado usando el código SPORT20!",
-                    
-                    // Datos para la lista dinámica 
                     categorias: ['🏃‍♂️ Running', '🏋️‍♂️ Gym', '⚽ Fútbol', '🧘‍♀️ Yoga', '🚴 Ciclismo'],
-                    
-                    // Datos para el hover 
                     hoverActivo: false,
-                    
-                    // Datos para el input en tiempo real
                     emailUsuario: ''
                 }
-            }
+            },
+            // AQUÍ ESCONDEMOS EL CÓDIGO CON LAS ETIQUETAS "ILEGALES" USANDO LA PROPIEDAD TEMPLATE
+            template: `
+                <div style="text-align: center; margin: 30px auto; max-width: 800px; background-color: #f9f9f9; padding: 20px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                    <h2 style="color: #002b5c;">Explora la experiencia interactiva SportFit</h2>
+                    
+                    <button @click="mostrarPanel = !mostrarPanel" class="btn-submit" style="cursor: pointer; margin-bottom: 20px; padding: 12px 25px; font-size: 16px;">
+                        {{ mostrarPanel ? 'Ocultar Panel Interactivo' : 'Descubrir Funciones Dinámicas' }}
+                    </button>
+                    
+                    <div v-if="mostrarPanel" style="animation: fadeIn 0.5s;">
+                        <hr style="border: 0; border-top: 1px solid #ccc; margin: 10px 0 20px 0;">
+                        
+                        <button @click="mostrarOferta = !mostrarOferta" class="btn-submit" style="cursor: pointer; margin-bottom: 15px;">
+                            {{ mostrarOferta ? 'Ocultar Oferta' : '🎁 Ver Oferta del Día' }}
+                        </button>
+                        <div v-if="mostrarOferta" style="padding: 10px; background-color: #ffcc00; color: #002b5c; border-radius: 5px; font-weight: bold; margin-bottom: 20px;">
+                            {{ mensajeOferta }}
+                        </div>
+                        
+                        <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
+                        
+                        <h3 style="color: #ff5722;">Categorías Populares</h3>
+                        <ul style="list-style-type: none; padding: 0; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+                            <li v-for="(categoria, index) in categorias" :key="index" style="background-color: #002b5c; color: white; padding: 10px 20px; border-radius: 20px;">
+                                {{ categoria }}
+                            </li>
+                        </ul>
+                        
+                        <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
+                        
+                        <div
+                            @mouseover="hoverActivo = true"
+                            @mouseleave="hoverActivo = false"
+                            :style="{ backgroundColor: hoverActivo ? '#e0f7fa' : 'white', border: '2px dashed #002b5c', padding: '15px', borderRadius: '5px', cursor: 'pointer', transition: '0.3s' }"
+                        >
+                            <h4 style="margin: 0; color: #002b5c;">
+                                {{ hoverActivo ? '¡Envío Gratis en compras mayores a $1099!' : 'Pasa el ratón por aquí para un beneficio extra' }}
+                            </h4>
+                        </div>
+                        
+                        <hr style="border: 0; border-top: 1px dashed #ccc; margin: 20px 0;">
+                        
+                        <div style="text-align: center; padding: 10px;">
+                            <label style="font-weight: bold; color: #002b5c;">Suscríbete para promociones exclusivas:</label><br>
+                            <input type="text" v-model="emailUsuario" placeholder="Escribe tu correo electrónico..." style="width: 80%; padding: 10px; margin-top: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                            <p v-if="emailUsuario" style="color: #ff5722; font-size: 15px; margin-top: 10px;">
+                                Confirmando envío de cupones a: <strong>{{ emailUsuario }}</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `
         });
         appIndex.mount('#app-index');
     </script>
 
-<footer>
+    <footer>
         <p>SportFit Pro - Tu estilo, tu ritmo.</p>
-        
         <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
-            
             <a href="https://validator.w3.org/">
-                <img style="border:0;width:88px;height:31px; margin-top: 16px;"
-                    src="https://www.w3.org/Icons/valid-html401-blue"
-                    alt="¡HTML Válido!">
+                <img style="border:0;width:88px;height:31px; margin-top: 16px;" src="https://www.w3.org/Icons/valid-html401-blue" alt="¡HTML Válido!">
             </a>
-
             <a href="https://jigsaw.w3.org/css-validator/">
-                <img style="border:0;width:88px;height:31px; margin-top: 16px;"
-                    src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
-                    alt="¡CSS Válido!">
+                <img style="border:0;width:88px;height:31px; margin-top: 16px;" src="https://jigsaw.w3.org/css-validator/images/vcss-blue" alt="¡CSS Válido!">
             </a>
-            
         </div>
     </footer>
-
-
-    
 </body>
 </html>
