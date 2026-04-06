@@ -7,57 +7,43 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <div class="navbar">
-            <div class="logo"><img src="assets/img/logo.png" alt="SportFit Pro Logo"></div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="catalogo.html">Catálogo</a></li>
-                    <li><a href="mision.html">Misión</a></li>
-                    <li><a href="vision.html">Visión</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                    <li><a href="admin.html">Administración</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div id="app-nosotros"></div>
 
-    <div class="container">
-        <h1 style="text-align: center; color: #002b5c;">Sobre Nosotros</h1>
-        <br>
-        <p style="text-align: center; font-size: 1.1rem;">En SportFit Pro creemos que el movimiento es para todos, no solo para los profesionales.</p>
-        <br>
-        
-        <section style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
-            <h2 style="color: #002b5c;">Misión</h2>
-            <p>Inspirar el movimiento diario ofreciendo ropa deportiva cómoda, funcional y con estilo para personas reales. Queremos que te sientas bien y luzcas genial, ya sea saliendo a caminar, en tu primera clase de gym o simplemente disfrutando un día activo.</p>
-        </section>
-        
-        <section style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
-            <h2 style="color: #002b5c;">Visión</h2>
-            <p>Ser la marca de referencia en México para el estilo de vida activo y casual, demostrando que no necesitas ser un atleta olímpico para disfrutar del deporte. Queremos ser tu primera opción cuando busques comodidad y calidad para tu día a día.</p>
-        </section>
-    </div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="assets/js/componentes.js"></script>
+    
+    <script>
+        const appNosotros = Vue.createApp({
+            components: {
+                'mi-header': ComponenteHeader,
+                'mi-footer': ComponenteFooter
+            },
+            template: `
+                <div>
+                    <mi-header></mi-header>
 
-<footer>
-        <p>SportFit Pro - Tu estilo, tu ritmo.</p>
-        
-        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
-            
-            <a href="https://validator.w3.org/">
-                <img style="border:0;width:88px;height:31px; margin-top: 16px;"
-                    src="https://www.w3.org/Icons/valid-html401-blue"
-                    alt="¡HTML Válido!">
-            </a>
+                    <div class="container">
+                        <h1 style="text-align: center; color: #002b5c;">Sobre Nosotros</h1>
+                        <br>
+                        <p style="text-align: center; font-size: 1.1rem;">En SportFit Pro creemos que el movimiento es para todos, no solo para los profesionales.</p>
+                        <br>
+                        
+                        <section style="background: #f9f9f9; padding: 20px; border-radius: 8px; margin-bottom: 20px;">
+                            <h2 style="color: #002b5c;">Misión</h2>
+                            <p>Inspirar el movimiento diario ofreciendo ropa deportiva cómoda, funcional y con estilo para personas reales. Queremos que te sientas bien y luzcas genial, ya sea saliendo a caminar, en tu primera clase de gym o simplemente disfrutando un día activo.</p>
+                        </section>
+                        
+                        <section style="background: #f9f9f9; padding: 20px; border-radius: 8px;">
+                            <h2 style="color: #002b5c;">Visión</h2>
+                            <p>Ser la marca de referencia en México para el estilo de vida activo y casual, demostrando que no necesitas ser un atleta olímpico para disfrutar del deporte. Queremos ser tu primera opción cuando busques comodidad y calidad para tu día a día.</p>
+                        </section>
+                    </div>
 
-            <a href="https://jigsaw.w3.org/css-validator/">
-                <img style="border:0;width:88px;height:31px; margin-top: 16px;"
-                    src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
-                    alt="¡CSS Válido!">
-            </a>
-            
-        </div>
-    </footer>
+                    <mi-footer></mi-footer>
+                </div>
+            `
+        });
+        appNosotros.mount('#app-nosotros');
+    </script>
 </body>
 </html>

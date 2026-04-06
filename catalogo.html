@@ -7,79 +7,65 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <div class="navbar">
-            <div class="logo"><img src="assets/img/logo.png" alt="SportFit Pro"></div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="catalogo.html">Catálogo</a></li>
-                    <li><a href="mision.html">Misión</a></li>
-                    <li><a href="vision.html">Visión</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                    <li><a href="admin.html">Administración</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div id="app-catalogo"></div>
 
-    <div class="container">
-        <h2>Nuestros Productos</h2>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="assets/js/componentes.js"></script>
+    
+    <script>
+        const appCatalogo = Vue.createApp({
+            components: {
+                'mi-header': ComponenteHeader,
+                'mi-footer': ComponenteFooter
+            },
+            template: `
+                <div>
+                    <mi-header></mi-header>
 
-        <div class="grid-productos">
-            
-            <div class="producto">
-                <img src="assets/img/productos/tenis1.jpg" alt="Tenis Running">
-                <h3>Tenis Velocity X</h3>
-                <p>Amortiguación avanzada para corredores.</p>
-                <div class="precio">$1,899.00</div>
-                <button class="btn-comprar">Agregar</button>
-            </div>
+                    <div class="container">
+                        <h2>Nuestros Productos</h2>
+                        <div class="grid-productos">
+                            
+                            <div class="producto">
+                                <img src="assets/img/productos/tenis1.jpg" alt="Tenis Running">
+                                <h3>Tenis Velocity X</h3>
+                                <p>Amortiguación avanzada para corredores.</p>
+                                <div class="precio">$1,899.00</div>
+                                <button class="btn-comprar">Agregar</button>
+                            </div>
 
-            <div class="producto">
-                <img src="assets/img/productos/playera1.jpg" alt="Playera Dry">
-                <h3>Playera TechFit</h3>
-                <p>Tecnología de secado rápido.</p>
-                <div class="precio">$450.00</div>
-                <button class="btn-comprar">Agregar</button>
-            </div>
+                            <div class="producto">
+                                <img src="assets/img/productos/playera1.jpg" alt="Playera Dry">
+                                <h3>Playera TechFit</h3>
+                                <p>Tecnología de secado rápido.</p>
+                                <div class="precio">$450.00</div>
+                                <button class="btn-comprar">Agregar</button>
+                            </div>
 
-            <div class="producto">
-                <img src="assets/img/productos/short1.jpg" alt="Short Gym">
-                <h3>Short Flex Pro</h3>
-                <p>Movilidad total para tus entrenamientos.</p>
-                <div class="precio">$599.00</div>
-                <button class="btn-comprar">Agregar</button>
-            </div>
-            
-            <div class="producto">
-                <img src="assets/img/productos/sudadera1.jpg" alt="Sudadera">
-                <h3>Sudadera Termal</h3>
-                <p>Ideal para entrenar en invierno.</p>
-                <div class="precio">$950.00</div>
-                <button class="btn-comprar">Agregar</button>
-            </div>
+                            <div class="producto">
+                                <img src="assets/img/productos/short1.jpg" alt="Short Gym">
+                                <h3>Short Flex Pro</h3>
+                                <p>Movilidad total para tus entrenamientos.</p>
+                                <div class="precio">$599.00</div>
+                                <button class="btn-comprar">Agregar</button>
+                            </div>
+                            
+                            <div class="producto">
+                                <img src="assets/img/productos/sudadera1.jpg" alt="Sudadera">
+                                <h3>Sudadera Termal</h3>
+                                <p>Ideal para entrenar en invierno.</p>
+                                <div class="precio">$950.00</div>
+                                <button class="btn-comprar">Agregar</button>
+                            </div>
 
-        </div>
-    </div>
-<footer>
-        <p>SportFit Pro - Tu estilo, tu ritmo.</p>
-        
-        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
-            
-            <a href="https://validator.w3.org/">
-                <img style="border:0;width:88px;height:31px; margin-top: 16px;"
-                    src="https://www.w3.org/Icons/valid-html401-blue"
-                    alt="¡HTML Válido!">
-            </a>
+                        </div>
+                    </div>
 
-            <a href="https://jigsaw.w3.org/css-validator/">
-                <img style="border:0;width:88px;height:31px; margin-top: 16px;"
-                    src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
-                    alt="¡CSS Válido!">
-            </a>
-            
-        </div>
-    </footer>
+                    <mi-footer></mi-footer>
+                </div>
+            `
+        });
+        appCatalogo.mount('#app-catalogo');
+    </script>
 </body>
 </html>

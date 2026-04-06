@@ -5,91 +5,213 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración - SportFit Pro</title>
     <link rel="stylesheet" href="assets/css/styles.css">
-    <link rel="stylesheet" href="https://raw.githubusercontent.com/bladimirbarriga79363-lgtm/SportFitPro/refs/heads/main/assets/css/formularios.css">
+    
+    <!-- NUEVO DISEÑO MODERNO PARA EL FORMULARIO -->
+    <style>
+        .admin-wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 50px 20px;
+            background-color: #f4f7f6; /* Fondo gris claro para que resalte la tarjeta blanca */
+        }
+        .form-card {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 43, 92, 0.15); /* Sombra elegante azulada */
+            width: 100%;
+            max-width: 550px;
+        }
+        .form-card h2 {
+            color: #002b5c;
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 24px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        .form-group input[type="text"], 
+        .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        .form-group input[type="text"]:focus, 
+        .form-group select:focus {
+            border-color: #002b5c; /* Borde azul al hacer clic */
+            outline: none;
+        }
+        .radio-group {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            padding: 10px 0;
+        }
+        .radio-group label {
+            font-weight: normal;
+            margin-bottom: 0;
+            cursor: pointer;
+            color: #555;
+        }
+        .radio-group input[type="radio"] {
+            transform: scale(1.2);
+            cursor: pointer;
+        }
+        .btn-modern {
+            width: 100%;
+            background-color: #ff5722;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            margin-top: 10px;
+        }
+        .btn-modern:hover {
+            background-color: #e64a19;
+            transform: translateY(-2px); /* Pequeño salto al pasar el mouse */
+        }
+    </style>
 </head>
 <body>
-    <header>
-        <div class="navbar">
-            <div class="logo"><img src="assets/img/logo.png" alt="SportFit Pro Logo"></div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="catalogo.html">Catálogo</a></li>
-                    <li><a href="mision.html">Misión</a></li>
-                    <li><a href="vision.html">Visión</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                    <li><a href="admin.html">Administración</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <!-- Contenedor vacío para pasar la validación del W3C -->
+    <div id="app-admin"></div>
 
-    <div class="container">
-        <h1 style="text-align: center; color: #002b5c;">Gestión de Inventario</h1>
-        
-        <div class="form-container">
-            <form action="#" method="GET" onsubmit="alert('¡Solicitud procesada con éxito!'); this.reset(); return false;">
-                <div class="form-group">
-                    <label>Acción a realizar:</label>
-                    <div class="radio-group">
-                        <input type="radio" id="alta" name="accion" value="alta" checked>
-                        <label for="alta">Alta</label>
-                        
-                        <input type="radio" id="modificacion" name="accion" value="modificacion">
-                        <label for="modificacion">Modificación</label>
-                        
-                        <input type="radio" id="baja" name="accion" value="baja">
-                        <label for="baja">Baja</label>
+    <!-- Carga de Vue.js y los componentes -->
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="assets/js/componentes.js"></script>
+    
+    <script>
+        const appAdmin = Vue.createApp({
+            components: {
+                'mi-header': ComponenteHeader,
+                'mi-footer': ComponenteFooter
+            },
+            data() {
+                return {
+                    formulario: {
+                        accion: 'alta',
+                        codigo: '',
+                        nombre: '',
+                        categoria: 'calzado',
+                        precio: ''
+                    },
+                    errores: {},
+                    mensajeExito: false
+                }
+            },
+            methods: {
+                validarFormulario() {
+                    this.errores = {}; 
+                    this.mensajeExito = false;
+                    let esValido = true;
+
+                    if (!this.formulario.codigo) {
+                        this.errores.codigo = "El código (SKU) es obligatorio.";
+                        esValido = false;
+                    }
+
+                    if (!this.formulario.nombre) {
+                        this.errores.nombre = "El nombre del producto es obligatorio.";
+                        esValido = false;
+                    }
+
+                    if (!this.formulario.precio || isNaN(this.formulario.precio) || Number(this.formulario.precio) <= 0) {
+                        this.errores.precio = "Ingresa un precio válido y mayor a 0.";
+                        esValido = false;
+                    }
+
+                    if (esValido) {
+                        this.mensajeExito = true;
+                        this.formulario.codigo = '';
+                        this.formulario.nombre = '';
+                        this.formulario.precio = '';
+                    }
+                }
+            },
+            template: `
+                <div>
+                    <!-- Inyectamos el menú -->
+                    <mi-header></mi-header>
+
+                    <!-- Wrapper y Tarjeta (Card) del Formulario -->
+                    <div class="admin-wrapper">
+                        <div class="form-card">
+                            <h2>🛠️ Panel de Gestión de Inventario</h2>
+                            
+                            <form @submit.prevent="validarFormulario">
+                                
+                                <div class="form-group">
+                                    <label>Acción a realizar:</label>
+                                    <div class="radio-group">
+                                        <input type="radio" id="alta" value="alta" v-model="formulario.accion">
+                                        <label for="alta">Alta</label>
+                                        
+                                        <input type="radio" id="modificacion" value="modificacion" v-model="formulario.accion">
+                                        <label for="modificacion">Modificación</label>
+                                        
+                                        <input type="radio" id="baja" value="baja" v-model="formulario.accion">
+                                        <label for="baja">Baja</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="codigo">Código del Producto (SKU):</label>
+                                    <input type="text" id="codigo" v-model="formulario.codigo" placeholder="Ej. TEN-001">
+                                    <span v-if="errores.codigo" style="color: red; font-size: 14px; display: block; margin-top: 5px;">{{ errores.codigo }}</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="nombre">Nombre del Producto:</label>
+                                    <input type="text" id="nombre" v-model="formulario.nombre" placeholder="Ej. Tenis Velocity X">
+                                    <span v-if="errores.nombre" style="color: red; font-size: 14px; display: block; margin-top: 5px;">{{ errores.nombre }}</span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="categoria">Categoría:</label>
+                                    <select id="categoria" v-model="formulario.categoria">
+                                        <option value="calzado">Calzado</option>
+                                        <option value="ropa">Ropa Deportiva</option>
+                                        <option value="accesorios">Sudadera</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="precio">Precio ($):</label>
+                                    <input type="text" id="precio" v-model="formulario.precio" placeholder="0.00">
+                                    <span v-if="errores.precio" style="color: red; font-size: 14px; display: block; margin-top: 5px;">{{ errores.precio }}</span>
+                                </div>
+
+                                <div v-if="mensajeExito" style="background-color: #d4edda; color: #155724; padding: 15px; margin-bottom: 20px; border-radius: 8px; font-weight: bold; text-align: center; border: 1px solid #c3e6cb;">
+                                    ✅ ¡Solicitud procesada con éxito, producto guardado!
+                                </div>
+
+                                <button type="submit" class="btn-modern">Procesar Solicitud</button>
+                            </form>
+                        </div>
                     </div>
+
+                    <!-- Inyectamos el pie de página -->
+                    <mi-footer></mi-footer>
                 </div>
-
-                <div class="form-group">
-                    <label for="codigo">Código del Producto (SKU):</label>
-                    <input type="text" id="codigo" name="codigo" required placeholder="Ej. TEN-001">
-                </div>
-
-                <div class="form-group">
-                    <label for="nombre">Nombre del Producto:</label>
-                    <input type="text" id="nombre" name="nombre" required placeholder="Ej. Tenis Velocity X">
-                </div>
-
-                <div class="form-group">
-                    <label for="categoria">Categoría:</label>
-                    <select id="categoria" name="categoria">
-                        <option value="calzado">Calzado</option>
-                        <option value="ropa">Ropa Deportiva</option>
-                        <option value="accesorios">Sudadera</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="precio">Precio ($):</label>
-                    <input type="number" id="precio" name="precio" min="0" step="0.01" required>
-                </div>
-
-                <button type="submit" class="btn-submit">Procesar Solicitud</button>
-            </form>
-        </div>
-    </div>
-
-<footer>
-        <p>SportFit Pro - Panel Administrativo</p>
-        
-        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
-            
-            <a href="https://validator.w3.org/">
-                <img style="border:0;width:88px;height:31px; margin-top: 16px;"
-                    src="https://www.w3.org/Icons/valid-html401-blue"
-                    alt="¡HTML Válido!">
-            </a>
-
-            <a href="https://jigsaw.w3.org/css-validator/">
-                <img style="border:0;width:88px;height:31px; margin-top: 16px;"
-                    src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
-                    alt="¡CSS Válido!">
-            </a>
-            
-        </div>
-    </footer>
+            `
+        });
+        appAdmin.mount('#app-admin');
+    </script>
 </body>
 </html>

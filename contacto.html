@@ -16,58 +16,44 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="navbar">
-            <div class="logo"><img src="assets/img/logo.png" alt="SportFit Pro"></div>
-            <nav>
-                <ul>
-                    <li><a href="index.html">Inicio</a></li>
-                    <li><a href="catalogo.html">Catálogo</a></li>
-                    <li><a href="mision.html">Misión</a></li>
-                    <li><a href="vision.html">Visión</a></li>
-                    <li><a href="contacto.html">Contacto</a></li>
-                    <li><a href="admin.html">Administración</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+    <div id="app-contacto"></div>
 
-    <div class="container">
-        <h1>Contáctanos</h1>
-        <p>¿Tienes dudas sobre tu talla o algún pedido? Escríbenos.</p>
-        
-        <form>
-            <label for="nombre">Nombre Completo:</label>
-            <input type="text" id="nombre" name="nombre" placeholder="Ejemplo Kevin Martínez" required>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="assets/js/componentes.js"></script>
+    
+    <script>
+        const appContacto = Vue.createApp({
+            components: {
+                'mi-header': ComponenteHeader,
+                'mi-footer': ComponenteFooter
+            },
+            template: `
+                <div>
+                    <mi-header></mi-header>
 
-            <label for="email">Correo Electrónico:</label>
-            <input type="email" id="email" name="email" placeholder="kevin@gmail.com" required>
+                    <div class="container">
+                        <h1>Contáctanos</h1>
+                        <p>¿Tienes dudas sobre tu talla o algún pedido? Escríbenos.</p>
+                        
+                        <form>
+                            <label for="nombre">Nombre Completo:</label>
+                            <input type="text" id="nombre" name="nombre" placeholder="Ejemplo Kevin Martínez" required>
 
-            <label for="mensaje">Mensaje:</label>
-            <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe tu duda aquí..."></textarea>
+                            <label for="email">Correo Electrónico:</label>
+                            <input type="email" id="email" name="email" placeholder="kevin@gmail.com" required>
 
-            <button type="submit" class="btn-comprar">Enviar Mensaje</button>
-        </form>
-    </div>
+                            <label for="mensaje">Mensaje:</label>
+                            <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe tu duda aquí..."></textarea>
 
-<footer>
-        <p>SportFit Pro - Tu estilo, tu ritmo.</p>
-        
-        <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
-            
-            <a href="https://validator.w3.org/">
-                <img style="border:0;width:88px;height:31px; margin-top: 16px;"
-                    src="https://www.w3.org/Icons/valid-html401-blue"
-                    alt="¡HTML Válido!">
-            </a>
+                            <button type="submit" class="btn-comprar">Enviar Mensaje</button>
+                        </form>
+                    </div>
 
-            <a href="https://jigsaw.w3.org/css-validator/">
-                <img style="border:0;width:88px;height:31px; margin-top: 16px;"
-                    src="https://jigsaw.w3.org/css-validator/images/vcss-blue"
-                    alt="¡CSS Válido!">
-            </a>
-            
-        </div>
-    </footer>
+                    <mi-footer></mi-footer>
+                </div>
+            `
+        });
+        appContacto.mount('#app-contacto');
+    </script>
 </body>
 </html>
