@@ -4,95 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Administración - SportFit Pro</title>
+    <link rel="stylesheet" href="assets/css/formularios.css">
     <link rel="stylesheet" href="assets/css/styles.css">
-    
-    <!-- NUEVO DISEÑO MODERNO PARA EL FORMULARIO -->
-    <style>
-        .admin-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 50px 20px;
-            background-color: #f4f7f6; /* Fondo gris claro para que resalte la tarjeta blanca */
-        }
-        .form-card {
-            background-color: #ffffff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0, 43, 92, 0.15); /* Sombra elegante azulada */
-            width: 100%;
-            max-width: 550px;
-        }
-        .form-card h2 {
-            color: #002b5c;
-            text-align: center;
-            margin-bottom: 25px;
-            font-size: 24px;
-        }
-        .form-group {
-            margin-bottom: 20px;
-        }
-        .form-group label {
-            display: block;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 8px;
-        }
-        .form-group input[type="text"], 
-        .form-group select {
-            width: 100%;
-            padding: 12px 15px;
-            border: 2px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 16px;
-            box-sizing: border-box;
-            transition: border-color 0.3s;
-        }
-        .form-group input[type="text"]:focus, 
-        .form-group select:focus {
-            border-color: #002b5c; /* Borde azul al hacer clic */
-            outline: none;
-        }
-        .radio-group {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            padding: 10px 0;
-        }
-        .radio-group label {
-            font-weight: normal;
-            margin-bottom: 0;
-            cursor: pointer;
-            color: #555;
-        }
-        .radio-group input[type="radio"] {
-            transform: scale(1.2);
-            cursor: pointer;
-        }
-        .btn-modern {
-            width: 100%;
-            background-color: #ff5722;
-            color: white;
-            padding: 15px;
-            border: none;
-            border-radius: 8px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.1s;
-            margin-top: 10px;
-        }
-        .btn-modern:hover {
-            background-color: #e64a19;
-            transform: translateY(-2px); /* Pequeño salto al pasar el mouse */
-        }
-    </style>
+    <link rel="stylesheet" href="https://raw.githubusercontent.com/bladimirbarriga79363-lgtm/SportFitPro/refs/heads/main/assets/css/formularios.css">
 </head>
 <body>
-    <!-- Contenedor vacío para pasar la validación del W3C -->
     <div id="app-admin"></div>
 
-    <!-- Carga de Vue.js y los componentes -->
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="assets/js/componentes.js"></script>
     
@@ -146,10 +64,8 @@
             },
             template: `
                 <div>
-                    <!-- Inyectamos el menú -->
                     <mi-header></mi-header>
 
-                    <!-- Wrapper y Tarjeta (Card) del Formulario -->
                     <div class="admin-wrapper">
                         <div class="form-card">
                             <h2>🛠️ Panel de Gestión de Inventario</h2>
@@ -206,7 +122,6 @@
                         </div>
                     </div>
 
-                    <!-- Inyectamos el pie de página -->
                     <mi-footer></mi-footer>
                 </div>
             `

@@ -1,5 +1,3 @@
-
-
 /* --- Reset y Estilos Base --- */
 * {
     margin: 0;
@@ -16,14 +14,14 @@ body {
 
 /* --- Cabecera y Navegación --- */
 header {
-    background-color: #002b5c; /* Azul deportivo */
+    background-color: #002b5c; 
     color: white;
     padding: 1rem 0;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
 }
 
 .navbar {
-    display: flex; /* Flexbox para alinear logo y menú */
+    display: flex; 
     justify-content: space-between;
     align-items: center;
     max-width: 1200px;
@@ -32,7 +30,7 @@ header {
 }
 
 .logo img {
-    height: 50px; /* Ajusta según tu logo */
+    height: 50px; 
 }
 
 nav ul {
@@ -49,7 +47,7 @@ nav a {
 }
 
 nav a:hover {
-    color: #00bcd4; /* Azul cian al pasar el mouse */
+    color: #00bcd4; 
 }
 
 /* --- Contenedor Principal --- */
@@ -64,7 +62,7 @@ nav a:hover {
 
 /* --- Estilos del Catálogo (Grid) --- */
 .grid-productos {
-    display: grid; /* CSS Grid (Puntos extra) */
+    display: grid; 
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 30px;
     margin-top: 20px;
@@ -119,50 +117,49 @@ footer {
     /* 1. El contenedor principal se apila verticalmente, logo arriba, menú abajo */
     .navbar {
         flex-direction: column;
-        align-items: center; /* Centra todo horizontalmente */
+        align-items: center; 
         padding: 15px 10px;
     }
 
     /* 2. El logo se ajusta un poco para no verse tan grande */
     .logo img {
-        max-height: 50px; /* Un poco más pequeño en celular */
-        margin-bottom: 15px; /* Espacio debajo del logo */
+        max-height: 50px; 
+        margin-bottom: 15px; 
     }
 
     /* 3. El menú de navegación */
     .navbar nav {
-        width: 100%; /* Ocupa todo el ancho disponible */
+        width: 100%; 
     }
 
     /* 4. La lista de enlaces*/
     .navbar nav ul {
         display: flex;
-        flex-direction: row; /* Vuelven a ser horizontales */
-        flex-wrap: wrap;     /* Si no caben, bajan a la siguiente línea */
-        justify-content: center; /* Centrados en la pantalla */
-        gap: 10px 15px;      /* Espacio vertical (10px) y horizontal (15px) entre enlaces */
+        flex-direction: row; 
+        flex-wrap: wrap;     
+        justify-content: center; 
+        gap: 10px 15px;      
         margin: 0;
         padding: 0;
     }
 
     /* 5. Estilo de los enlaces individuales */
     .navbar nav ul li {
-        margin: 0; /* Quitamos márgenes viejos */
+        margin: 0; 
     }
 
     .navbar nav ul li a {
-        display: inline-block; /* para que el padding funcione bien */
-        padding: 8px 12px;     /* Área de toque cómoda pero no exagerada */
-        font-size: 0.95rem;    /* Ligeramente más pequeño para que quepan mejor */
-        border-radius: 20px;   /* Un toque redondeado moderno  */
-        background-color: transparent; /* Sin fondo tosco */
-        border: 1px solid transparent; /* Borde invisible*/
+        display: inline-block; 
+        padding: 8px 12px;     
+        font-size: 0.95rem;   
+        border-radius: 20px;   
+        background-color: transparent; 
+        border: 1px solid transparent; 
     }
 
-    /* Un pequeño efecto al tocar con el dedo */
+    
     .navbar nav ul li a:active {
         background-color: rgba(255, 255, 255, 0.1);
         border-color: rgba(255, 255, 255, 0.3);
     }
 }
-
