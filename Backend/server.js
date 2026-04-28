@@ -1,23 +1,66 @@
 const express = require('express');
 const cors = require('cors');
-const db = require('./db'); // Importamos tu plantilla de conexión
-const bcrypt = require('bcrypt');
+const db = require('./db');
+const bcrypt = require('bcrypt'); // Librería para cifrar contraseñas
 require('dotenv').config();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Middlewares
-const app = express();
-app.use(cors()); // Permite que tu HTML se comunique con este servidor
+app.use(cors());
 app.use(express.json());
 
-// Ruta de prueba
-app.get('/', (req, res) => {
-    res.send('Servidor de SportFit Pro funcionando 🚀');
+
+// MÓDULO DE USUARIOS Y ROLES (PASO 2)
+
+
+// 1. POST: Registrar un nuevo usuario (con contraseña cifrada)
+app.post('/api/usuarios', async (req, res) => {
+    const { nombre, email, password, rol } = req.body;
+    try {
+        // Ciframos la contraseña usando bcrypt
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+        // Guardamos en la base de datos de forma segura
+        const nuevoUsuario = await db.query(
+            'INSERT INTO usuarios (nombre, email, password, rol) VALUES ($1, $2, $3, $4) RETURNING id, nombre, email, rol',
+            [nombre, email, hashedPassword, rol]
+        );
+        res.status(201).json(nuevoUsuario.rows[0]);
+    } catch (error) {
+        console.error("Error en registro:", error);
+        res.status(500).json({ error: 'Error al registrar usuario. Verifica que el correo no esté repetido.' });
+    }
 });
 
-// Ruta para obtener todos los productos (Paso 1 de la rúbrica)
+// 2. GET: Obtener todos los usuarios (para que el Admin los vea)
+app.get('/api/usuarios', async (req, res) => {
+    try {
+        const { rows } = await db.query('SELECT id, nombre, email, rol FROM usuarios ORDER BY id ASC');
+        res.json(rows);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener usuarios' });
+    }
+});
+
+// 3. DELETE: Eliminar un usuario por su ID
+app.delete('/api/usuarios/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await db.query('DELETE FROM usuarios WHERE id = $1', [id]);
+        res.json({ mensaje: 'Usuario eliminado correctamente' });
+    } catch (error) {
+        res.status(500).json({ error: 'Error al eliminar usuario' });
+    }
+});
+
+
+// MÓDULO DE PRODUCTOS (PASO 1)
+
+
+// GET: Obtener el catálogo de productos
 app.get('/api/productos', async (req, res) => {
     try {
         const { rows } = await db.query('SELECT * FROM productos');
@@ -28,48 +71,9 @@ app.get('/api/productos', async (req, res) => {
     }
 });
 
-// --- MÓDULO DE USUARIOS (PASO 2) ---
-
-// 1. REGISTRAR USUARIO (Con cifrado)
-app.post('/api/usuarios', async (req, res) => {
-    const { nombre, email, password, rol } = req.body;
-    try {
-        // Ciframos la contraseña antes de guardar 
-        const saltRounds = 10;
-        const hashedPassword = await bcrypt.hash(password, saltRounds);
-
-        const nuevoUsuario = await db.query(
-            'INSERT INTO usuarios (nombre, email, password, rol) VALUES ($1, $2, $3, $4) RETURNING id, nombre, email, rol',
-            [nombre, email, hashedPassword, rol]
-        );
-        res.status(201).json(nuevoUsuario.rows[0]);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al registrar usuario' });
-    }
-});
-
-// 2. OBTENER USUARIOS (Para gestión del admin)
-app.get('/api/usuarios', async (req, res) => {
-    try {
-        const { rows } = await db.query('SELECT id, nombre, email, rol FROM usuarios');
-        res.json(rows);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al obtener usuarios' });
-    }
-});
-
-// 3. ELIMINAR USUARIO 
-app.delete('/api/usuarios/:id', async (req, res) => {
-    const { id } = req.params;
-    try {
-        await db.query('DELETE FROM usuarios WHERE id = $1', [id]);
-        res.json({ mensaje: 'Usuario eliminado correctamente' });
-    } catch (error) {
-        res.status(500).json({ error: 'Error al eliminar' });
-    }
-});
-
-// Iniciar servidor
+// ==========================================
+// INICIO DEL SERVIDOR
+// ==========================================
 app.listen(PORT, () => {
-    console.log(`Servidor corriendo en http://localhost:${PORT}`);
+    console.log(`✅ Servidor Full-Stack corriendo en http://localhost:${PORT}`);
 });
