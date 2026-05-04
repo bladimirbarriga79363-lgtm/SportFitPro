@@ -29,7 +29,7 @@ const ComponenteHeader = {
                     
                         <!-- NUEVO: Botón de carrito (Solo visible si hay sesión) -->
                         <li v-if="usuario">
-                        <a href="carrito.html">🛒 Mi Carrito</a>
+                        <a href="carrito.html">Mi Carrito</a>
                         </li>
                     
                         <!-- Solo mostramos 'Administración' si el rol es admin -->
@@ -38,12 +38,12 @@ const ComponenteHeader = {
                         </li>
 
                         <li v-if="!usuario">
-                            <a href="login.html" style="font-weight: bold; color: #ff9800;">Entrar</a>
+                            <a href="login.html">Iniciar Sesión</a>
                         </li>
                         
                         <li v-else>
-                            <a href="#" @click.prevent="cerrarSesion" style="font-weight: bold; color: #ff5722;">
-                                Salir ({{ usuario.nombre }})
+                            <a href="#" @click.prevent="cerrarSesion">
+                                Cerrar Sesión ({{ usuario.nombre }})
                             </a>
                         </li>
                     </ul>

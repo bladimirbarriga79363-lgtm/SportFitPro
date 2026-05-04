@@ -3,23 +3,22 @@ const cors = require('cors');
 const db = require('./db');
 const bcrypt = require('bcrypt'); // Librería para cifrar contraseñas
 require('dotenv').config();
-// --- NUEVO PARA EL PASO 4 (HTTPS) ---
+
 const https = require('https');
 const fs = require('fs');
 const path = require('path');
 
 const app = express();
+
 const PORT = process.env.PORT || 3000;
 
 // Middlewares
 app.use(cors());
 app.use(express.json());
 
-
+app.use(express.static(path.join(__dirname, '../Frontend')));
 
 // MÓDULO DE USUARIOS Y ROLES (PASO 2)
-
-
 // 1. POST: Registrar un nuevo usuario (con contraseña cifrada)
 app.post('/api/usuarios', async (req, res) => {
     const { nombre, email, password, rol } = req.body;
@@ -61,10 +60,7 @@ app.delete('/api/usuarios/:id', async (req, res) => {
     }
 });
 
-
 // MÓDULO DE PRODUCTOS (PASO 1)
-
-
 // GET: Obtener el catálogo de productos
 app.get('/api/productos', async (req, res) => {
     try {
@@ -102,10 +98,7 @@ app.delete('/api/productos/:codigo', async (req, res) => {
     }
 });
 
-// ==========================================
 // PASO 3: SESIONES, AJAX Y ACTUALIZACIÓN
-// ==========================================
-
 // 1. LOGIN (Para conservar sesiones)
 app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
@@ -139,7 +132,7 @@ app.put('/api/productos/:codigoViejo', async (req, res) => {
     }
 });
 
-// 3. VALIDACIÓN AJAX EN TIEMPO REAL (Requisito "Usar AJAX para ID de Producto")
+// 3. VALIDACIÓN AJAX EN TIEMPO REAL 
 app.get('/api/check-producto/:codigo', async (req, res) => {
     const { codigo } = req.params;
     try {
@@ -151,18 +144,12 @@ app.get('/api/check-producto/:codigo', async (req, res) => {
     }
 });
 
-// ==========================================
 // PASO 4: CONFIGURACIÓN DE SERVIDOR HTTPS
-// ==========================================
-
-// Leemos las llaves que generaste con OpenSSL
 const opcionesHTTPS = {
     key: fs.readFileSync(path.join(__dirname, 'key.pem')),
     cert: fs.readFileSync(path.join(__dirname, 'cert.pem'))
 };
-
 // Levantamos el servidor en modo seguro
-
 https.createServer(opcionesHTTPS, app).listen(PORT, () => {
-    console.log(`🚀 Servidor SEGURO corriendo en: https://localhost:${PORT}`);
+    console.log(`Servidor SEGURO corriendo en: https://localhost:${PORT}`);
 });
