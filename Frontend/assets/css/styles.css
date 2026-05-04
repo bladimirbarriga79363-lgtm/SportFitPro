@@ -74,6 +74,16 @@ nav a:hover {
     padding: 15px;
     text-align: center;
     transition: transform 0.2s;
+    /* --- Flexbox para alinear el contenido --- */
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+/* Empuja el precio y botón hacia abajo en todas las tarjetas --- */
+.producto p {
+    flex-grow: 1;
+    margin-bottom: 15px;
 }
 
 .producto:hover {
@@ -82,9 +92,10 @@ nav a:hover {
 }
 
 .producto img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 5px;
+    width: 100%;
+    height: 220px; /* Le damos una altura estricta a todas las fotos */
+    object-fit: contain; /* Ajusta la imagen sin estirarla ni recortarla */
+    margin-bottom: 15px;
 }
 
 .precio {

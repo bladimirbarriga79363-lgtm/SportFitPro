@@ -21,8 +21,19 @@
         data() {
             return {
                 productos: [], 
-                cargando: true,
-                error: false
+                filtroActivo: 'todos',
+                cargando: true, // Agregado para que funcione tu pantalla de carga
+                error: false    // Agregado para manejar errores de conexión
+            }
+        },
+        computed: {
+            productosFiltrados() {
+                // Si el filtro es 'todos', mostramos el catálogo completo
+                if (this.filtroActivo === 'todos') {
+                    return this.productos;
+                }
+                // Filtramos buscando coincidencia exacta con el nombre de la categoría en PostgreSQL
+                return this.productos.filter(producto => producto.categoria === this.filtroActivo);
             }
         },
         mounted() {
@@ -38,7 +49,6 @@
                     }
 
                     const datos = await respuesta.json();
-                    
                     
                     this.productos = datos.map(producto => {
                         return { ...producto, cantidadElegida: 1 };
@@ -84,10 +94,9 @@
                 // La alerta inteligente con Sí / No
                 const respuestaUsuario = confirm(`¡Se agregaron ${cantidadAAgregar} ${p.nombre}(s) a tu carrito!\n\n¿Deseas ir a tu carrito ahora?`);
                 
-                if (respuestaUsuario) { // Si el usuario le da en "Aceptar" / "Sí"
+                if (respuestaUsuario) {
                     window.location.href = 'carrito.html';
                 }
-                
             }
         },
         template: `
@@ -96,6 +105,16 @@
 
                 <main class="container">
                     <h2 style="text-align: center; margin-bottom: 30px;">Nuestro Catálogo</h2>
+
+                    <!-- NUEVO: Botonera de Filtros -->
+                    <div class="botones-filtro" style="display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap;">
+                        <button class="btn-modern" @click="filtroActivo = 'todos'">Todos</button>
+                        <button class="btn-modern" @click="filtroActivo = 'calzado'">Tenis 👟</button>
+                        <button class="btn-modern" @click="filtroActivo = 'playera'">Playeras 👕</button>
+                        <button class="btn-modern" @click="filtroActivo = 'short'">Shorts 🩳</button>
+                        <button class="btn-modern" @click="filtroActivo = 'sudadera'">Sudaderas 🧥</button>
+                        <button class="btn-modern" @click="filtroActivo = 'pants'">Pants 👖</button>
+                    </div>
 
                     <div v-if="cargando" style="text-align: center; padding: 50px;">
                         <p>⏳ Cargando productos desde la base de datos...</p>
@@ -106,14 +125,15 @@
                         <small>Asegúrate de que 'node server.js' esté corriendo en tu carpeta backend.</small>
                     </div>
 
+                    <!-- NUEVO: Cambiamos 'p in productos' por 'p in productosFiltrados' -->
                     <div class="grid-productos" v-if="!cargando && !error">
-                        <div class="producto" v-for="p in productos" :key="p.codigo">
+                        <div class="producto" v-for="p in productosFiltrados" :key="p.codigo">
                             <img :src="p.imagen" :alt="p.nombre">
                             <h3>{{ p.nombre }}</h3>
                             <p>{{ p.descripcion }}</p>
                             <div class="precio">$ {{ p.precio }}</div>
                             
-                            <!-- NUEVO: Selector de Cantidad -->
+                            <!-- Selector de Cantidad -->
                             <div style="margin: 10px 0; display: flex; justify-content: center; align-items: center; gap: 10px;">
                                 <label style="font-size: 14px; color: #555;">Cantidad:</label>
                                 <input type="number" v-model="p.cantidadElegida" min="1" style="width: 60px; padding: 5px; text-align: center; border: 1px solid #ccc; border-radius: 5px;">
@@ -129,6 +149,6 @@
         `
     });
     appCatalogo.mount('#app-catalogo');
-</script>
+    </script>
 </body>
 </html>

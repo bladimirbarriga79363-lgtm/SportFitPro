@@ -7,9 +7,26 @@
     <link rel="stylesheet" href="assets/css/formularios.css">
     <style>
         .carrito-container { max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
-        .item-carrito { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding: 15px 0; }
-        .item-info h4 { margin: 0; color: #002b5c; }
-        .item-precio { font-weight: bold; color: #ff5722; font-size: 18px; }
+            .item-carrito { 
+            display: flex; 
+            align-items: center; 
+            border-bottom: 1px solid #eee; 
+            padding: 15px 0; 
+        }
+
+        .item-info { 
+            flex: 1; /* Esto obliga a la descripción a tomar todo el espacio, empujando lo demás a la derecha */
+            padding-right: 15px;
+        }
+
+        .item-precio { 
+            font-weight: bold; 
+            color: #ff5722; 
+            font-size: 18px; 
+            width: 120px; /* Ancho fijo para crear una "columna" imaginaria */
+            text-align: right; /* Alineamos los números a la derecha */
+            margin-right: 20px; /* Separación con el botón de la X */
+        }
         .btn-eliminar { background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
         .total-container { text-align: right; margin-top: 20px; font-size: 22px; font-weight: bold; color: #002b5c; }
         .btn-comprar { background: #4caf50; color: white; padding: 15px 30px; border: none; border-radius: 8px; font-size: 18px; cursor: pointer; width: 100%; margin-top: 20px; }
@@ -73,48 +90,8 @@
     </style>
 </head>
 <body>
-    <div id="app-carrito">
-        <mi-header></mi-header>
-        
-        <main class="container">
-            <div class="carrito-container">
-                <h2 style="text-align: center; color: #002b5c; border-bottom: 2px solid #eee; padding-bottom: 10px;">🛒 Mi Carrito de Compras</h2>
-                
-                <div v-if="carrito.length === 0" style="text-align: center; padding: 40px;">
-                    <p style="font-size: 18px; color: #666;">Tu carrito está vacío.</p>
-                    <a href="catalogo.html" class="btn-modern" style="display: inline-block; text-decoration: none; margin-top: 15px;">Ir al Catálogo</a>
-                </div>
-
-                <div v-else>
-                    <div v-for="(item, index) in carrito" :key="index" class="item-carrito">
-                        <div class="item-info">
-                            <h4>{{ item.nombre }}</h4>
-                            <small>Código: {{ item.codigo }} | Cantidad: {{ item.cantidad }}</small>
-                        </div>
-                        <div class="item-precio">
-                            $ {{ (item.precio * item.cantidad).toFixed(2) }}
-                        </div>
-                        <button class="btn-eliminar" @click="eliminarItem(index)">X</button>
-                    </div>
-
-                    <div class="total-container">
-                        Total a pagar: $ {{ calcularTotal() }}
-                    </div>
-
-                    <div class="botones-carrito">
-                        <a href="catalogo.html" class="btn-volver">
-                            ← Seguir Comprando
-                        </a>
-                        <button class="btn-comprar" @click="procesarCompra">
-                            Proceder al Pago 💳
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <mi-footer></mi-footer>
-    </div>
+    
+    <div id="app-carrito"></div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script src="assets/js/componentes.js"></script>
@@ -155,7 +132,52 @@
                     this.carrito = [];
                     localStorage.removeItem('carritoSportFit');
                 }
-            }
+            },
+            
+            template: `
+                <div>
+                    <mi-header></mi-header>
+                    
+                    <main class="container">
+                        <div class="carrito-container">
+                            <h2 style="text-align: center; color: #002b5c; border-bottom: 2px solid #eee; padding-bottom: 10px;">🛒 Mi Carrito de Compras</h2>
+                            
+                            <div v-if="carrito.length === 0" style="text-align: center; padding: 40px;">
+                                <p style="font-size: 18px; color: #666;">Tu carrito está vacío.</p>
+                                <a href="catalogo.html" class="btn-modern" style="display: inline-block; text-decoration: none; margin-top: 15px;">Ir al Catálogo</a>
+                            </div>
+
+                            <div v-else>
+                                <div v-for="(item, index) in carrito" :key="index" class="item-carrito">
+                                    <div class="item-info">
+                                        <h3>{{ item.nombre }}</h3>
+                                        <small>Código: {{ item.codigo }} | Cantidad: {{ item.cantidad }}</small>
+                                    </div>
+                                    <div class="item-precio">
+                                        $ {{ (item.precio * item.cantidad).toFixed(2) }}
+                                    </div>
+                                    <button class="btn-eliminar" @click="eliminarItem(index)">X</button>
+                                </div>
+
+                                <div class="total-container">
+                                    Total a pagar: $ {{ calcularTotal() }}
+                                </div>
+
+                                <div class="botones-carrito">
+                                    <a href="catalogo.html" class="btn-volver">
+                                        ← Seguir Comprando
+                                    </a>
+                                    <button class="btn-comprar" @click="procesarCompra">
+                                        Proceder al Pago 💳
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <mi-footer></mi-footer>
+                </div>
+            `
         }).mount('#app-carrito');
     </script>
 </body>
