@@ -39,7 +39,7 @@
 
                     const datos = await respuesta.json();
                     
-                    // Magia aquí: A cada producto le agregamos la variable "cantidadElegida" empezando en 1
+                    
                     this.productos = datos.map(producto => {
                         return { ...producto, cantidadElegida: 1 };
                     });
@@ -87,7 +87,7 @@
                 if (respuestaUsuario) { // Si el usuario le da en "Aceptar" / "Sí"
                     window.location.href = 'carrito.html';
                 }
-                // Si le da en Cancelar, se queda en el catálogo tranquilamente
+                
             }
         },
         template: `
