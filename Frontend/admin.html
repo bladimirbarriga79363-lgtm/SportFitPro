@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Administración - SportFit Pro</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formularios.css">
+    <style>
+        .tabs { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; }
+        .tab-btn { padding: 10px 20px; cursor: pointer; border: none; background: #e0e0e0; border-radius: 5px; font-weight: bold; }
+        .tab-btn.activa { background: #002b5c; color: white; }
+        .tabla-usuarios { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        .tabla-usuarios th, .tabla-usuarios td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .tabla-usuarios th { background-color: #f4f6f8; }
+        .btn-eliminar { background: #dc3545; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div id="app-admin"></div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="assets/js/componentes.js"></script>
+    
+    <script>
+        const appAdmin = Vue.createApp({
+            components: { 'mi-header': ComponenteHeader, 'mi-footer': ComponenteFooter },
+            data() {
+                return {
+                    usuarioActual: null, // Solo guardará los datos si es Admin
+                    seccionActiva: 'productos', 
+                    
+                    usuarios: [], 
+                    formularioUsuario: { nombre: '', email: '', password: '', rol: 'invitado' },
+                    
+                    productos: [],
+                    formularioProducto: { codigo: '', nombre: '', descripcion: '', categoria: 'calzado', precio: '', imagen: '' },
+                    modoEdicion: false,
+                    codigoOriginalEdicion: '',
+                    errorCodigoAJAX: false 
+                }
+            },
+            mounted() {
+                // Protección de Ruta
+                const sesionGuardada = localStorage.getItem('sesionSportFit');
+                
+                if (!sesionGuardada) {
+                    alert("Acceso denegado. Debes iniciar sesión.");
+                    window.location.href = 'login.html';
+                    return;
+                }
+
+                const sesion = JSON.parse(sesionGuardada);
+                
+                if (sesion.rol !== 'admin') {
+                    alert("Acceso denegado. Tu cuenta no tiene permisos de administrador.");
+                    window.location.href = 'index.html';
+                    return;
+                }
+
+                // Si pasa las dos pruebas, le damos acceso
+                this.usuarioActual = sesion;
+                this.cargarDatosIniciales();
+            },
+            methods: {
+                cerrarSesion() {
+                    localStorage.removeItem('sesionSportFit');
+                    window.location.href = 'index.html'; // Lo mandamos a la tienda al salir
+                },
+                cargarDatosIniciales() {
+                    this.obtenerUsuarios();
+                    this.obtenerProductosCatalogo();
+                },
+
+                // --- PRODUCTOS CRUD ---
+                async obtenerProductosCatalogo() {
+                    const res = await fetch('https://localhost:3000/api/productos');
+                    this.productos = await res.json();
+                },
+                async validarCodigoAJAX() {
+                    if(!this.formularioProducto.codigo || this.modoEdicion) return;
+                    const res = await fetch(`https://localhost:3000/api/check-producto/${this.formularioProducto.codigo}`);
+                    const data = await res.json();
+                    this.errorCodigoAJAX = data.existe;
+                },
+                async guardarProducto() {
+                    if (this.errorCodigoAJAX) return alert("El código ya existe. Usa uno diferente.");
+                    const url = this.modoEdicion 
+                        ? `https://localhost:3000/api/productos/${this.codigoOriginalEdicion}` 
+                        : 'https://localhost:3000/api/productos';
+                    const method = this.modoEdicion ? 'PUT' : 'POST';
+
+                    await fetch(url, {
+                        method: method,
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(this.formularioProducto)
+                    });
+                    this.cancelarEdicion();
+                    this.obtenerProductosCatalogo();
+                },
+                prepararEdicion(prod) {
+                    this.modoEdicion = true;
+                    this.codigoOriginalEdicion = prod.codigo;
+                    this.formularioProducto = { ...prod }; 
+                },
+                cancelarEdicion() {
+                    this.modoEdicion = false;
+                    this.codigoOriginalEdicion = '';
+                    this.formularioProducto = { codigo: '', nombre: '', descripcion: '', categoria: 'calzado', precio: '', imagen: '' };
+                },
+                async eliminarProducto(codigo) {
+                    if(!confirm("¿Eliminar producto?")) return;
+                    await fetch(`https://localhost:3000/api/productos/${codigo}`, { method: 'DELETE' });
+                    this.obtenerProductosCatalogo();
+                },
+
+                // --- USUARIOS CRUD ---
+                async obtenerUsuarios() {
+                    const res = await fetch('https://localhost:3000/api/usuarios');
+                    this.usuarios = await res.json();
+                },
+                async eliminarUsuario(id) {
+                    if(!confirm("¿Eliminar usuario?")) return;
+                    await fetch(`https://localhost:3000/api/usuarios/${id}`, { method: 'DELETE' });
+                    this.obtenerUsuarios();
+                }
+            },
+            template: `
+                <div>
+                    <mi-header></mi-header>
+
+                    <main class="admin-wrapper" v-if="usuarioActual" style="padding: 40px 20px;">
+                        <div class="form-card" style="max-width: 900px; margin: 0 auto;">
+                            
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                                <h2>🛠️ Panel - Hola, {{ usuarioActual.nombre }} ({{ usuarioActual.rol }})</h2>
+                                <button @click="cerrarSesion" style="padding: 8px 15px; background: #dc3545; color: white; border:none; border-radius: 5px; cursor:pointer; font-weight: bold;">Cerrar Sesión</button>
+                            </div>
+                            
+                            <div class="tabs">
+                                <button class="tab-btn" :class="{ activa: seccionActiva === 'usuarios' }" @click="seccionActiva = 'usuarios'">Gestión de Usuarios</button>
+                                <button class="tab-btn" :class="{ activa: seccionActiva === 'productos' }" @click="seccionActiva = 'productos'">Gestión de Productos</button>
+                            </div>
+
+                            <div v-if="seccionActiva === 'usuarios'">
+                                <h3>Usuarios Activos</h3>
+                                <div style="overflow-x: auto;">
+                                    <table class="tabla-usuarios">
+                                        <thead><tr><th>ID</th><th>Nombre</th><th>Rol</th><th>Acción</th></tr></thead>
+                                        <tbody>
+                                            <tr v-for="user in usuarios" :key="user.id">
+                                                <td>{{ user.id }}</td>
+                                                <td>{{ user.nombre }}</td>
+                                                <td><strong>{{ user.rol.toUpperCase() }}</strong></td>
+                                                <td><button class="btn-eliminar" @click="eliminarUsuario(user.id)">Eliminar</button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div v-if="seccionActiva === 'productos'">
+                                <h3 style="color: #002b5c;">{{ modoEdicion ? '✏️ Editando Producto' : '➕ Agregar Producto' }}</h3>
+                                
+                                <form @submit.prevent="guardarProducto" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom:30px;">
+                                    <div class="form-group">
+                                        <label>Código:</label>
+                                        <input type="text" v-model="formularioProducto.codigo" @blur="validarCodigoAJAX" :disabled="modoEdicion" required>
+                                        <small v-if="errorCodigoAJAX" style="color: red; display:block; margin-top:5px;">¡Este código ya existe! Usa otro</small>
+                                    </div>
+                                    <div class="form-group"><label>Nombre:</label><input type="text" v-model="formularioProducto.nombre" required></div>
+                                    <div class="form-group" style="grid-column: span 2;"><label>Descripción:</label><input type="text" v-model="formularioProducto.descripcion" style="width: 100%; padding: 10px;" required></div>
+                                    <div class="form-group"><label>Categoría:</label>
+                                        <select v-model="formularioProducto.categoria">
+                                            <option value="calzado">Calzado</option>
+                                            <option value="ropa">Ropa</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group"><label>Precio ($):</label><input type="number" step="0.01" v-model="formularioProducto.precio" required></div>
+                                    <div class="form-group" style="grid-column: span 2;"><label>Ruta Imagen:</label><input type="text" v-model="formularioProducto.imagen" style="width: 100%; padding: 10px;" required></div>
+                                    
+                                    <div style="grid-column: span 2; display: flex; gap: 10px;">
+                                        <button type="submit" class="btn-modern" style="flex: 1;" :disabled="errorCodigoAJAX">{{ modoEdicion ? 'Actualizar BD' : 'Guardar Producto' }}</button>
+                                        <button v-if="modoEdicion" type="button" @click="cancelarEdicion" style="flex: 1; background: #6c757d; color: white; border: none; border-radius: 5px; font-weight: bold;">Cancelar</button>
+                                    </div>
+                                </form>
+
+                                <div style="overflow-x: auto;">
+                                    <table class="tabla-usuarios">
+                                        <thead><tr><th>Código</th><th>Nombre</th><th>Precio</th><th>Acciones</th></tr></thead>
+                                        <tbody>
+                                            <tr v-for="prod in productos" :key="prod.codigo">
+                                                <td><strong>{{ prod.codigo }}</strong></td>
+                                                <td>{{ prod.nombre }}</td>
+                                                <td>\${{ prod.precio }}</td>
+                                                <td>
+                                                    <button @click="prepararEdicion(prod)" style="background: #ffc107; color:#000; font-weight:bold; border: none; padding: 5px 10px; border-radius: 4px; margin-right: 5px; cursor: pointer;">Editar</button>
+                                                    <button class="btn-eliminar" @click="eliminarProducto(prod.codigo)">Eliminar</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </main>
+
+                    <mi-footer></mi-footer>
+                </div>
+            `
+        });
+        appAdmin.mount('#app-admin');
+    </script>
+</body>
+</html>

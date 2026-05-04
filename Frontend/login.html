@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Acceso - SportFit Pro</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/formularios.css">
+</head>
+<body>
+    <div id="app-login">
+        <mi-header></mi-header>
+        <main class="container" style="max-width: 500px; margin: 80px auto;">
+            <div class="form-card">
+                <h2 style="text-align:center;">{{ esRegistro ? 'Crear Cuenta' : 'Iniciar Sesión' }}</h2>
+                
+                <form @submit.prevent="procesarFormulario">
+                    <div v-if="esRegistro" class="form-group">
+                        <label>Nombre:</label>
+                        <input type="text" v-model="form.nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email:</label>
+                        <input type="email" v-model="form.email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contraseña:</label>
+                        <input type="password" v-model="form.password" required>
+                    </div>
+                    
+                    <p v-if="mensaje" :style="{ color: esError ? 'red' : 'green', textAlign: 'center' }">{{ mensaje }}</p>
+                    
+                    <button type="submit" class="btn-modern" style="width:100%;">
+                        {{ esRegistro ? 'Registrarse' : 'Entrar' }}
+                    </button>
+                    
+                    <p style="text-align:center; margin-top:15px; cursor:pointer; color:blue;" @click="esRegistro = !esRegistro">
+                        {{ esRegistro ? '¿Ya tienes cuenta? Inicia sesión' : '¿No tienes cuenta? Regístrate aquí' }}
+                    </p>
+                </form>
+            </div>
+        </main>
+        <mi-footer></mi-footer>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="assets/js/componentes.js"></script>
+    <script>
+        Vue.createApp({
+            components: { 'mi-header': ComponenteHeader, 'mi-footer': ComponenteFooter },
+            data() {
+                return {
+                    esRegistro: false,
+                    form: { nombre: '', email: '', password: '', rol: 'cliente' },
+                    mensaje: '',
+                    esError: false
+                }
+            },
+            methods: {
+                async procesarFormulario() {
+                    const ruta = this.esRegistro ? 'usuarios' : 'login';
+                    try {
+                        const res = await fetch(`https://localhost:3000/api/${ruta}`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(this.form)
+                        });
+                        const data = await res.json();
+                        if (!res.ok) throw new Error(data.error);
+
+                        if (this.esRegistro) {
+                            this.mensaje = "Registro exitoso. ¡Inicia sesión!";
+                            this.esRegistro = false;
+                        } else {
+                            localStorage.setItem('sesionSportFit', JSON.stringify(data));
+                            window.location.href = data.rol === 'admin' ? 'admin.html' : 'index.html';
+                        }
+                    } catch (err) {
+                        this.mensaje = err.message;
+                        this.esError = true;
+                    }
+                }
+            }
+        }).mount('#app-login');
+    </script>
+</body>
+</html>

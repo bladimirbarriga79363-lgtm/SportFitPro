@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - SportFit Pro</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <div id="app-catalogo"></div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="assets/js/componentes.js"></script>
+    
+    <script>
+    const appCatalogo = Vue.createApp({
+        components: {
+            'mi-header': ComponenteHeader,
+            'mi-footer': ComponenteFooter
+        },
+        data() {
+            return {
+                productos: [], 
+                cargando: true,
+                error: false
+            }
+        },
+        mounted() {
+            this.obtenerProductos();
+        },
+        methods: {
+            async obtenerProductos() {
+                try {
+                    const respuesta = await fetch('https://localhost:3000/api/productos');
+                    
+                    if (!respuesta.ok) {
+                        throw new Error('No se pudo conectar con el servidor');
+                    }
+
+                    const datos = await respuesta.json();
+                    
+                    // Magia aquí: A cada producto le agregamos la variable "cantidadElegida" empezando en 1
+                    this.productos = datos.map(producto => {
+                        return { ...producto, cantidadElegida: 1 };
+                    });
+                    
+                    this.cargando = false;
+                } catch (err) {
+                    console.error("Error al obtener productos:", err);
+                    this.error = true;
+                    this.cargando = false;
+                }
+            },
+            agregarAlCarrito(p) {
+                const sesionGuardada = localStorage.getItem('sesionSportFit');
+        
+                if (!sesionGuardada) {
+                    window.location.href = 'login.html';
+                    return; 
+                }
+
+                let carrito = JSON.parse(localStorage.getItem('carritoSportFit')) || [];
+                const productoExistente = carrito.find(item => item.codigo === p.codigo);
+                
+                // Asegurarnos de que sea un número válido
+                const cantidadAAgregar = parseInt(p.cantidadElegida);
+
+                if (productoExistente) {
+                    productoExistente.cantidad += cantidadAAgregar;
+                } else {
+                    carrito.push({
+                        codigo: p.codigo,
+                        nombre: p.nombre,
+                        precio: p.precio,
+                        cantidad: cantidadAAgregar
+                    });
+                }
+
+                localStorage.setItem('carritoSportFit', JSON.stringify(carrito));
+                
+                // Reiniciamos el contador de esa tarjeta a 1
+                p.cantidadElegida = 1;
+                
+                // La alerta inteligente con Sí / No
+                const respuestaUsuario = confirm(`¡Se agregaron ${cantidadAAgregar} ${p.nombre}(s) a tu carrito!\n\n¿Deseas ir a tu carrito ahora?`);
+                
+                if (respuestaUsuario) { // Si el usuario le da en "Aceptar" / "Sí"
+                    window.location.href = 'carrito.html';
+                }
+                // Si le da en Cancelar, se queda en el catálogo tranquilamente
+            }
+        },
+        template: `
+            <div>
+                <mi-header></mi-header>
+
+                <main class="container">
+                    <h2 style="text-align: center; margin-bottom: 30px;">Nuestro Catálogo</h2>
+
+                    <div v-if="cargando" style="text-align: center; padding: 50px;">
+                        <p>⏳ Cargando productos desde la base de datos...</p>
+                    </div>
+
+                    <div v-if="error" style="text-align: center; color: #ff5722; padding: 50px;">
+                        <p>❌ Hubo un error al conectar con el servidor.</p>
+                        <small>Asegúrate de que 'node server.js' esté corriendo en tu carpeta backend.</small>
+                    </div>
+
+                    <div class="grid-productos" v-if="!cargando && !error">
+                        <div class="producto" v-for="p in productos" :key="p.codigo">
+                            <img :src="p.imagen" :alt="p.nombre">
+                            <h3>{{ p.nombre }}</h3>
+                            <p>{{ p.descripcion }}</p>
+                            <div class="precio">$ {{ p.precio }}</div>
+                            
+                            <!-- NUEVO: Selector de Cantidad -->
+                            <div style="margin: 10px 0; display: flex; justify-content: center; align-items: center; gap: 10px;">
+                                <label style="font-size: 14px; color: #555;">Cantidad:</label>
+                                <input type="number" v-model="p.cantidadElegida" min="1" style="width: 60px; padding: 5px; text-align: center; border: 1px solid #ccc; border-radius: 5px;">
+                            </div>
+
+                            <button @click="agregarAlCarrito(p)" class="btn-comprar">Agregar al carrito</button>
+                        </div>
+                    </div>
+                </main>
+
+                <mi-footer></mi-footer>
+            </div>
+        `
+    });
+    appCatalogo.mount('#app-catalogo');
+</script>
+</body>
+</html>
