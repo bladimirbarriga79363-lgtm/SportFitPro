@@ -95,3 +95,39 @@
     background-color: #e64a19;
     transform: translateY(-2px); 
 }
+
+/* Contenedor flexible para alinear los botones */
+.botones-edicion {
+    display: flex;
+    gap: 15px; /* Separación perfecta entre ambos */
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Obligamos a que AMBOS botones midan exactamente lo mismo */
+.botones-edicion button {
+    flex: 1; /* Se estiran a la mitad exacta del contenedor */
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    box-sizing: border-box; /* Evita que el padding los deforme */
+    height: 45px; /* Altura fija para que no haya desniveles */
+}
+
+.botones-edicion .btn-naranja {
+    background-color: #ff5722;
+    color: white;
+}
+
+.botones-edicion .btn-gris {
+    background-color: #6c757d;
+    color: white;
+}
+
+.botones-edicion button:hover {
+    opacity: 0.9;
+}

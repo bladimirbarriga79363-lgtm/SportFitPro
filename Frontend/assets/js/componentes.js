@@ -1,12 +1,13 @@
 // Definimos el componente del Encabezado (Menú de navegación)
-// Definimos el componente del Encabezado (Ahora inteligente)
+// Definimos el componente del Encabezado 
 const ComponenteHeader = {
     // 1. Leemos si hay alguien logueado al cargar la página
     data() {
         return {
-            usuario: JSON.parse(localStorage.getItem('sesionSportFit')) || null
+            usuario: JSON.parse(localStorage.getItem('sesionSportFit')) || null,
         }
     },
+
     // 2. Método para borrar la sesión y regresar al inicio
     methods: {
         cerrarSesion() {
@@ -27,12 +28,12 @@ const ComponenteHeader = {
                         <li><a href="contacto.html">Contacto</a></li>
                         
                     
-                        <!-- NUEVO: Botón de carrito (Solo visible si hay sesión) -->
+                        <!-- Botón de carrito (Solo visible si hay sesión) -->
                         <li v-if="usuario">
                         <a href="carrito.html">Mi Carrito</a>
                         </li>
                     
-                        <!-- Solo mostramos 'Administración' si el rol es admin -->
+                        <!-- 'Administración' si el rol es admin -->
                         <li v-if="usuario && usuario.rol === 'admin'">
                             <a href="admin.html">Administración</a>
                         </li>
