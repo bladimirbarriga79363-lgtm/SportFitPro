@@ -143,12 +143,15 @@ app.get('/api/check-producto/:codigo', async (req, res) => {
         res.status(500).json({ error: 'Error AJAX' });
     }
 });
+// Ruta rápida para apagar el berrinche del favicon en Chrome
+app.get('/favicon.ico', (req, res) => res.status(204).end());
 
 // PASO 4: CONFIGURACIÓN DE SERVIDOR HTTPS
 const opcionesHTTPS = {
-    key: fs.readFileSync(path.join(__dirname, 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'cert.pem'))
+  key: fs.readFileSync('/etc/letsencrypt/live/sportfitpro.mexicocentral.cloudapp.azure.com/privkey.pem'),
+  cert: fs.readFileSync('/etc/letsencrypt/live/sportfitpro.mexicocentral.cloudapp.azure.com/fullchain.pem')
 };
+
 // Levantamos el servidor en modo seguro
 https.createServer(opcionesHTTPS, app).listen(PORT, () => {
     console.log(`Servidor SEGURO corriendo en: https://localhost:${PORT}`);
