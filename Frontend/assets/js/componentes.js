@@ -60,10 +60,12 @@ const ComponenteFooter = {
         <footer>
             <p>SportFit Pro - Tu estilo, tu ritmo.</p>
             <div style="display: flex; justify-content: center; gap: 15px; margin-top: 10px;">
-                <a href="https://validator.w3.org/">
+                <a href="https://validator.w3.org/nu/?doc=https://sportfitpro.mexicocentral.cloudapp.azure.com:3000/index.html" target="_blank">
+</a>
                     <img style="border:0;width:88px;height:31px; margin-top: 16px;" src="https://www.w3.org/Icons/valid-html401-blue" alt="¡HTML Válido!">
                 </a>
-                <a href="https://jigsaw.w3.org/css-validator/">
+                <a href="https://jigsaw.w3.org/css-validator/validator?uri=https://sportfitpro.mexicocentral.cloudapp.azure.com:3000/styles.css" target="_blank">
+</a>
                     <img style="border:0;width:88px;height:31px; margin-top: 16px;" src="https://jigsaw.w3.org/css-validator/images/vcss-blue" alt="¡CSS Válido!">
                 </a>
             </div>
