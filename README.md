@@ -21,5 +21,12 @@ Git y GitHub (Control de versiones en equipo)
 
 Equipo de Desarrollo:
 Barriga Morales Jesús Bladimir
-
 Reyna Sandoval Carlos Yahir
+
+
+
+## Despliegue en Producción (Unidad Actual)
+- *URL Oficial del Proyecto:* [https://sportfitpro.mexicocentral.cloudapp.azure.com:3000](https://sportfitpro.mexicocentral.cloudapp.azure.com:3000)
+- *Infraestructura:* Servidor Linux (Ubuntu) en Microsoft Azure.
+- *Seguridad:* Conexión cifrada (HTTPS) con certificado SSL real firmado por Let's Encrypt.
+- *Disponibilidad:* Servidor backend administrado permanentemente en segundo plano con PM2.
